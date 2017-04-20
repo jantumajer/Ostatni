@@ -1,5 +1,5 @@
 ##################
-### Ukazka vypuctu korelaci mezi klimatickymi promennymi a letokruhovou chronologii
+### Ukazka vypoctu korelaci mezi klimatickymi promennymi a letokruhovou chronologii
 ### pomoci baliku treeclim
 ### Zang, Biondi (2015): treeclim: an R package for the numerical calibration of proxy-climate relationships. Ecography, 38(4), 431-436.
 ### https://cran.r-project.org/web/packages/treeclim/treeclim.pdf
@@ -50,7 +50,7 @@ klouzave.korelace <- dcc(chronologie, teplota, selection = -6:9, method = "corre
 plot(klouzave.korelace)
 
 # 2] jednotlive mesicni hodnoty klimatickych dat mezi sebou koreluji, coz muze
-# zkreslit vysledny obrazek o growth-climate vztazích.
+# zkreslit vysledny obrazek o growth-climate vztazÃ­ch.
 
 response.function <- dcc(chronologie, klima, selection=-6:9, method="response")
 plot(response.function)
