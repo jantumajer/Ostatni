@@ -1,3 +1,5 @@
+library(Rcmdr)
+
 ####################
 # Analyza fytocenologickeho snimku metodou PCA
 # Herben, Munzbergova (2003): Zpracovani fytocenologickych dat v prikladech. Cast I: Data o druhovem slozeni. 118 s.
