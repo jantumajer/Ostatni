@@ -174,3 +174,33 @@ res.plot(res)
 # Resilience = prumerna sirka letokruhu za predchozi obdobi/prumerna sirka letokruhu za nasledujici obdobi
 # Recovery = prumerna sirka letokruhu za nasledujici obdobi/sirka letokruhu
 # Relative resilience = (prumerna sirka letokruhu za nasledujici obdobi - sirka letokruhu)/prumerna sirka letokruhu za predchozi obdobi
+
+
+
+
+
+################################################
+# Procvicovani - postup
+################################################
+
+procv.series <- read.rwl("C:/Users/Jan Tumajer/Desktop/skola/vyuka/Dendrochronologie/Dendro_R/Dendro_procvicovani/germ035.rwl")
+# 21 stromu
+
+max((rwl.stats(procv.series))["ar1"])
+# PGN08A
+
+
+sirka <- (rwl.stats(procv.series))[c(4,5)]
+sirka$vahy <- sirka$year*sirka$mean
+sum(sirka$vahy)/sum(sirka$year)
+# 2.06
+
+det <- detrend(procv.series, method="Spline", nyrs=50)
+
+chronologie <- chron(det, biweight=TRUE)
+crn.plot(chronologie)
+
+pointer.years <- pointer.norm(procv.series, window=7, method.thresh="Neuwirth", N.thresh1=1, N.thresh2=1.28, N.thresh3=1.645, series.thresh=75)
+View(pointer.years$out)
+
+
