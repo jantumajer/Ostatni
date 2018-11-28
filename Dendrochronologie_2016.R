@@ -28,26 +28,34 @@ spline <- detrend(serie, method="Spline", nyrs=50)
 exponenciala <- detrend(serie, method="ModNegExp") # Negativni exponenciala nebo linearni trend (pokud se exponenciala nenafituje)
   # TRWmod = a*e^(b*rok)+c
 prumer <- detrend(serie, method="Mean")
-AR <- detrend(serie, method="Ar") # Residualni varianta splinu
+AR <- detrend(serie, method="Ar") # Residualni varianta splinu, zachovava pouze mezirocni varibilitu a ne dlouhodobe trendy
+hugershoff <- detrend(serie, method="ModHugershoff") # Model biologickeho rustu - zrzchlovani v juvenilnim obdobi, pote postupny pokles
+  # TRWmod = a*(rok^b)*e^(-g*rok) + d
 
 ### Porovnani zakladnich statistik hrubych dat 
 statistiky.1 <- 
-  rbind(colMeans((rwl.stats(serie))[,c(2:12)]),
-      colMeans((rwl.stats(spline))[,c(2:12)]),
-      colMeans((rwl.stats(exponenciala))[,c(2:12)]),
-      colMeans((rwl.stats(prumer))[,c(2:12)]),
-      colMeans((rwl.stats(AR))[,c(2:12)]))
-rownames(statistiky.1) <- c("hruba data", "spline", "exponenciala", "prumer", "AR")
+  rbind(colMeans((rwl.stats(serie))[,c(2:10)]),
+      colMeans((rwl.stats(spline))[,c(2:10)]),
+      colMeans((rwl.stats(exponenciala))[,c(2:10)]),
+      colMeans((rwl.stats(prumer))[,c(2:10)]),
+      colMeans((rwl.stats(AR))[,c(2:10)]),
+      colMeans((rwl.stats(hugershoff))[,c(2:10)]))
+rownames(statistiky.1) <- c("hruba data", "spline", "exponenciala", "prumer", "AR", "Hugershoff")
 View(statistiky.1)
   # Srovnej predevsim sloupecky mean a stdev (hruba vs. detrendovana) a ar1 (standardni vs. residualni detrendovaci metody)
 
-# Zakladni statistiky DETRENDOVANYCH dat
+#### Zakladni statistiky DETRENDOVANYCH dat
+# Pri vypoctu techto statistik se rozlisuje mezi vyvrty pochazejicimi ze stejneho nebo ruznych stromu - nutne programu rici, jak je mezi nimi rozeznat
+
+kody <- read.ids(serie, stc=c(0,2,3)) # Podle poctu znaku v kodu plochy, stromu a vyvrtu (stc) rozklicuje jednotliva ID
+
 statistiky.2 <-   
-  rbind(rwi.stats(spline),
-        rwi.stats(exponenciala),
-        rwi.stats(prumer),
-        rwi.stats(AR))
-rownames(statistiky.2) <- c("spline", "exponenciala", "prumer", "AR")
+  rbind(rwi.stats(spline, ids=kody),
+        rwi.stats(exponenciala, ids=kody),
+        rwi.stats(prumer, ids=kody),
+        rwi.stats(AR, ids=kody),
+        rwi.stats(hugershoff, ids=kody))
+rownames(statistiky.2) <- c("spline", "exponenciala", "prumer", "AR", "Hugershoff")
 View(statistiky.2)
   # Rbar = prumerna korelace mezi vsemi moznymi dvojicemi serii
   # EPS = Rbar vazeny poctem serii (do jake miry dany soubor serii charakterizuje idealni chronologii tvorenou nekonecnym 
